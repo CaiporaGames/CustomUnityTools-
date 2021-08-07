@@ -1,0 +1,3 @@
+- To remove a point just right mouse click.
+
+- To add a point just press: shift + left mouse click.
