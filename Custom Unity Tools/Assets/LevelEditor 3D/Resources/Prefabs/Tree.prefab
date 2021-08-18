@@ -96,7 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   col: 0
-  partName: Empty
+  partName: Tree
   part: {fileID: 0}
   style:
     m_Name: 

@@ -28,8 +28,8 @@ public class GridMapCriator : EditorWindow
     private void OnEnable()
     {
         SetupStyles();
-        SetupMap();
         SetUpNodesNParts();        
+        SetupMap();
     }
 
     void SetupMap()
@@ -37,6 +37,7 @@ public class GridMapCriator : EditorWindow
         try
         {
             theMap = GameObject.FindGameObjectWithTag("Map");
+            RestoreTheMap(theMap);
         }
         catch (Exception e)
         {
@@ -46,6 +47,27 @@ public class GridMapCriator : EditorWindow
         {
             theMap = new GameObject("Map");
             theMap.tag = "Map";
+        }
+    }
+
+    void RestoreTheMap(GameObject map)
+    {
+        if (theMap.transform.childCount > 0)
+        {
+            for (int i = 0; i < theMap.transform.childCount; i++)
+            {
+                int ii = theMap.transform.GetChild(i).GetComponent<PartScripts>().row;
+                int jj = theMap.transform.GetChild(i).GetComponent<PartScripts>().col;
+
+                GUIStyle style = theMap.transform.GetChild(i).GetComponent<PartScripts>().style;
+                nodes[ii][jj].SetStyle(style);
+                parts[ii][jj] = theMap.transform.GetChild(i).GetComponent<PartScripts>();
+                parts[ii][jj].part = theMap.transform.GetChild(i).gameObject;
+                parts[ii][jj].name = theMap.transform.GetChild(i).name;
+                parts[ii][jj].row = ii;
+                parts[ii][jj].col = jj;
+                
+            }
         }
     }
 
@@ -153,19 +175,25 @@ public class GridMapCriator : EditorWindow
     {
         if (isErasing)
         {
-            nodes[row][col].SetStyle(empty);
-            GUI.changed = true;
+            if (parts[row][col] != null)
+            {
+                nodes[row][col].SetStyle(empty);
+                DestroyImmediate(parts[row][col].gameObject);
+                GUI.changed = true;
+            }
+            parts[row][col] = null;
         }
         else
         {
             if (parts[row][col] == null)
             {
                 nodes[row][col].SetStyle(currentStyle);
-                GameObject go = Instantiate(Resources.Load("Prefabs" + currentStyle.normal.background.name)) as GameObject;
+                GameObject go = Instantiate(Resources.Load("Prefabs/" + currentStyle.normal.background.name)) as GameObject;
                 go.name = currentStyle.normal.background.name;
                 go.transform.position = new Vector3(col * 10 , 0, row * 10);
                 go.transform.parent = theMap.transform;
                 parts[row][col] = go.GetComponent<PartScripts>();
+                parts[row][col].part = go;
                 parts[row][col].name = go.name;
                 parts[row][col].col = col;
                 parts[row][col].style = currentStyle;

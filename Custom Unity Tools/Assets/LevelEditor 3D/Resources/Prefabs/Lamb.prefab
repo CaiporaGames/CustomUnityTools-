@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3982834637566702500}
   - component: {fileID: 3563458349273733154}
   m_Layer: 0
-  m_Name: Lamp
+  m_Name: Lamb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   col: 0
-  partName: Empty
+  partName: Lamp
   part: {fileID: 0}
   style:
     m_Name: 
